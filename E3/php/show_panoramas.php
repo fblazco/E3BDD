@@ -52,38 +52,44 @@ $hospedajes = $_SESSION['panoramas_disponibles']?? [];
         <h1>Panoramas en: <?= htmlspecialchars($ciudad) ?></h1>
 
         <?php if (!empty($hospedajes)): ?>
-            <div class="lista-hospedajes">
-                <table>
-                    <thead>
-                        <tr>
-                            <?php
-                            $cols = array_keys($hospedajes[0]);
-                            foreach ($cols as $col): ?>
-                                <th><?= htmlspecialchars($col) ?></th>
-                            <?php endforeach; ?>
-                        </tr>
-                    </thead>
-<tbody>
-    <?php foreach ($hospedajes as $index => $fila): ?>
-        <?php
-            $esDisponible = strtolower(trim($fila['estado_disponibilidad'])) === 'disponible';
-            $attrs = $esDisponible ? "onclick=\"document.getElementById('form-$index').submit()\" style=\"cursor: pointer;\"" : "";
-        ?>
-        <tr <?= $attrs ?>>
-            <?php foreach ($cols as $col): ?>
-                <td><?= htmlspecialchars((string)$fila[$col]) ?></td>
-            <?php endforeach; ?>
-        </tr>
-        <?php if ($esDisponible): ?>
-            <form id="form-<?= $index ?>" action="ver_panoramas.php" method="post" style="display:none;">
-                <?php foreach ($fila as $key => $value): ?>
-                    <input type="hidden" name="<?= htmlspecialchars($key) ?>" value="<?= htmlspecialchars($value) ?>">
+<form action="buscar_transporte.php" method="post">
+    <div class="lista-hospedajes">
+        <table>
+            <thead>
+                <tr>
+                    <th>Seleccionar</th>
+                    <?php
+                    $cols = array_keys($hospedajes[0]);
+                    foreach ($cols as $col): ?>
+                        <th><?= htmlspecialchars($col) ?></th>
+                    <?php endforeach; ?>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($hospedajes as $index => $fila): ?>
+                    <?php $esDisponible = strtolower(trim($fila['estado_disponibilidad'])) === 'disponible'; ?>
+                    <tr>
+                        <td>
+                            <?php if ($esDisponible): ?>
+                                <input type="checkbox" name="seleccionados[]" value="<?= htmlspecialchars($fila['id']) ?>">
+                            <?php else: ?>
+                                <span style="color:black;">No disponible</span>
+                            <?php endif; ?>
+                        </td>
+                        <?php foreach ($cols as $col): ?>
+                            <td><?= htmlspecialchars((string)$fila[$col]) ?></td>
+                        <?php endforeach; ?>
+                    </tr>
                 <?php endforeach; ?>
-            </form>
-        <?php endif; ?>
-    <?php endforeach; ?>
-</tbody>
-            </div>
+            </tbody>
+        </table>
+    </div>
+    <div style="margin-top: 1em;">
+        <button type="submit">Confirmar selección</button>
+    </div>
+</form>
+ 
+
         <?php else: ?>
             <p>No hay hospedajes disponibles para mostrar.</p>
         <?php endif; ?>
