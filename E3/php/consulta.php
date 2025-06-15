@@ -19,7 +19,24 @@ $resultados = [];
 $error = '';
 
 // Aquí debe escribir la lógica de la consulta y ejecución
+try {
+    $db = conectarBD();
 
+
+$columnaSel = preg_replace('/[^a-zA-Z0-9_]/', '', $columnaSel);
+$whereCampo = preg_replace('/[^a-zA-Z0-9_]/', '', $whereCampo);
+
+$sql = "SELECT $columnaSel FROM $tablaSel WHERE $whereCampo LIKE :valor";
+$stmt = $db->prepare($sql);
+$valorLike = "%$whereValor%";
+$stmt->bindParam(':valor', $valorLike);
+$stmt->execute();
+$resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+} catch (Exception $e) {
+    if ($db->inTransaction()) $db->rollBack();
+    $_SESSION['error'] = 'Usuario no se puede registrar';
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">

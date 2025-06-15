@@ -13,12 +13,143 @@ if (!isset($_SESSION['usuario'])) {
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Hola, <?= htmlspecialchars($_SESSION['usuario']) ?></h1>
-        <h2>¿Qué deseas hacer?</h2>
+<div class="container">
+<h1>Hospedajes seleccionados</h1>
 
-        <div class="menu">
-     </div>
+        <?php
+        $seleccionados_guardados = $_SESSION['hospedajes_seleccionados'] ?? [];
+        ?>
+
+        <?php if (!empty($seleccionados_guardados)): ?>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($seleccionados_guardados as $id): ?>
+                        <tr>
+<td>
+    <?= isset($id) && $id !== null ? htmlspecialchars((string)$id) : '<i>valor no definido</i>' ?>
+</td>
+
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php else: ?>
+            <p>No hay hospedajes seleccionados.</p>
+        <?php endif; ?>
+        <p><a href="show_hospedajes.php">Volver a Hospedajes</a></p>
     </div>
+
+<div class="container">
+        <h1>Panoramas seleccionados</h1>
+
+        <?php
+        $seleccionados_guardados = $_SESSION['panoramas_seleccionados'] ?? [];
+        ?>
+
+        <?php if (!empty($seleccionados_guardados)): ?>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($seleccionados_guardados as $id): ?>
+                        <tr>
+<td>
+    <?= isset($id) && $id !== null ? htmlspecialchars((string)$id) : '<i>valor no definido</i>' ?>
+</td>
+
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php else: ?>
+            <p>No hay panoramas seleccionados.</p>
+        <?php endif; ?>
+
+        <p><a href="show_panoramas.php">Volver a Panoramas</a></p>
+
+    </div>
+<div class="container">
+        <h1>Participantes seleccionados:</h1>
+
+        <?php
+        $seleccionados_guardados = $_SESSION['entradas'] ?? [];
+        ?>
+
+        <?php if (!empty($seleccionados_guardados)): ?>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Edad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+        <?php foreach ($seleccionados_guardados as $item): ?>
+                <tr>
+                    <td><?= htmlspecialchars($item['nombre']) ?></td>
+                    <td><?= htmlspecialchars($item['edad']) ?></td>
+                </tr>
+            <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php else: ?>
+            <p>No hay integrantes seleccionados.</p>
+        <?php endif; ?>
+
+        <p><a href="show_panoramas.php">Volver a Panoramas</a></p>
+
+    </div>
+
+
+<div class="container">
+        <h1>Transportes seleccionados</h1>
+
+        <?php
+        $seleccionados_guardados = $_SESSION['transportes_seleccionados'] ?? [];
+        ?>
+
+        <?php if (!empty($seleccionados_guardados)): ?>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($seleccionados_guardados as $id): ?>
+                        <tr>
+<td>
+    <?= isset($id) && $id !== null ? htmlspecialchars((string)$id) : '<i>valor no definido</i>' ?>
+</td>
+
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        
+        <?php else: ?>
+            <p>No hay Transportes seleccionados.</p>
+        <?php endif; ?>
+
+        <p><a href="show_transportes.php">Volver a Transportes</a></p>
+ <div style="margin-top: 1em;">
+  <a href="procesar_confirmar_eleccion.php"
+     onclick="return confirm('CUIDADO ESTA ACCION ES IRREVERSIBLE');"
+     style="display:inline-block; padding:8px 16px; background:#007bff; color:white; text-decoration:none; border-radius:4px;">
+    Confirmar Viaje (Agenda)
+  </a>
+</div>
+        
 </body>
 </html>
+
+

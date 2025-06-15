@@ -20,8 +20,8 @@ $mensaje = $_GET['mensaje'] ?? null;
             <label for="nombre">Nombre del viaje:</label>
             <input type="text" id="nombre" name="nombre" required>
 
-            <label for="descripcion">Descripción:</label>
-            <textarea id="descripcion" name="descripcion" rows="4" required></textarea>
+            <label for="etiqueta">etiqueta:</label>
+            <textarea id="etiqueta" name="etiqueta" rows="4" required></textarea>
 
             <label for="fecha_inicio">Fecha de inicio:</label>
             <input type="date" id="fecha_inicio" name="fecha_inicio" required>
@@ -32,7 +32,10 @@ $mensaje = $_GET['mensaje'] ?? null;
             <label for="ciudad">Ciudad hospedaje:</label>
             <input type="text" id="ciudad" name="ciudad" required>
 
-          
+             <label for="cantidad">Numero Personas:</label>
+            <input type="text" id="cantidad" name="cantidad" required>
+
+         
             
             <!-- Cuando se crea el viaje, se debe calcular el precio total y puntaje obtenido por este y luego sumarle ese puntaje al usuario  -->
 

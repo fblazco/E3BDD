@@ -15,7 +15,8 @@ if (!isset($_SESSION['usuario'])) {
 <body>
     <div class="container">
         <h1>Hola, <?= htmlspecialchars($_SESSION['usuario']) ?></h1>
-        <h2>¿Qué deseas hacer?</h2>
+       <h2>¿Qué deseas hacer? <?= htmlspecialchars($_SESSION['email']) ?>
+ </h2>
 
         <div class="menu">
             <a href="crear_viaje.php" class="btn">Crear Viaje</a>

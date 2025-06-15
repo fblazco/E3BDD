@@ -4,6 +4,7 @@ session_start();
 $error = $_GET['error'] ?? null;
 $ciudad = $_SESSION['ciudad'] ?? '';
 $hospedajes = $_SESSION['hospedajes_disponibles']?? []; 
+$cantidad_personas= $_SESSION['cantidad_personas'];
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -51,7 +52,7 @@ $hospedajes = $_SESSION['hospedajes_disponibles']?? [];
 <body>
     <div class="container">
         <h1>Hospedajes disponibles en: <?= htmlspecialchars($ciudad) ?></h1>
-
+        <h2>para  <?= htmlspecialchars($cantidad_personas)?> </h2>
         <?php if (!empty($hospedajes)): ?>
 <form action="procesar_seleccion_h.php" method="post">
     <div class="lista-hospedajes">
@@ -67,23 +68,24 @@ $hospedajes = $_SESSION['hospedajes_disponibles']?? [];
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($hospedajes as $index => $fila): ?>
-                    <?php $esDisponible = strtolower(trim($fila['estado_disponibilidad'])) === 'disponible'; ?>
-                    <tr>
-                        <td>
-                            <?php if ($esDisponible): ?>
-                                <input type="checkbox" name="seleccionados[]" value="<?= htmlspecialchars($fila['id']) ?>">
-<input type="hidden" name="data[<?= $fila['id'] ?>][<?= htmlspecialchars($key) ?>]" value="<?= htmlspecialchars($value) ?>">
+        <?php foreach ($hospedajes as $fila): ?>
+    <?php $esDisponible = strtolower(trim($fila['estado_disponibilidad'])) === 'disponible'; ?>
+    <tr>
+        <td>
+            <?php if ($esDisponible): ?>
+<input type="checkbox" name="seleccionados[]" value="<?= htmlspecialchars($fila['id']) ?>">
+            
+<?php else: ?>
+                <span style="color:black;">No disponible</span>
+            <?php endif; ?>
+        </td>
 
-                            <?php else: ?>
-                                <span style="color:black;">No disponible</span>
-                            <?php endif; ?>
-                        </td>
-                        <?php foreach ($cols as $col): ?>
-                            <td><?= htmlspecialchars((string)$fila[$col]) ?></td>
-                        <?php endforeach; ?>
-                    </tr>
-                <?php endforeach; ?>
+        <?php foreach ($cols as $col): ?>
+            <td><?= htmlspecialchars((string)$fila[$col]) ?></td>
+        <?php endforeach; ?>
+    </tr>
+<?php endforeach; ?>
+
             </tbody>
         </table>
     </div>

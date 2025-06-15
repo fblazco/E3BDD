@@ -55,7 +55,7 @@ $hospedajes = $_SESSION['aviones_disponibles']?? [];
 
 
         <?php if (!empty($hospedajes)): ?>
- <form action="confirmar_eleccion.php" method="post">
+ <form action="procesar_seleccion_t.php" method="post">
     <div class="lista-hospedajes">
         <table>
             <thead>

@@ -21,6 +21,7 @@ $resultado = $stmt->fetch();
 
 if ($resultado) {
     $_SESSION['usuario'] = $usuario;
+    $_SESSION['email']= $resultado['correo'];
     header('Location: main.php');
     exit();
 } else {

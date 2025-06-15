@@ -1,6 +1,7 @@
 <?php
 session_start();
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -14,12 +15,11 @@ session_start();
 
         <form action="procesar_buscar_panorama.php" method="POST" class="formulario-grid-2x4">
 
-                        <div class="form-group">
+    <div class="form-group">
                 <label for="lugar_panorama"></label>
-                <input type="text" id="lugar_panorama" name="lugar_panorama" required
-                    value="<?= htmlspecialchars($form_data['lugar_panorama'] ?? '') ?>" required>
+<input type="text" id="lugar_panorama" name="lugar_panorama" required value="<?= htmlspecialchars($form_data['lugar_panorama'] ?? '') ?>" required>
             </div>
-            <div class="grid-full center-content">
+       <div class="grid-full center-content">
                 <button type="submit">buscar</button>
 
                 <p><a href="main.php">Volver al inicio</a></p>

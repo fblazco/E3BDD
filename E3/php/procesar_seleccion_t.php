@@ -1,9 +1,10 @@
+
 <?php
 session_start();
 
 //var_dump($_POST['seleccionados']); 
 
-$_SESSION['hospedajes_seleccionados'] = $_POST['seleccionados'] ?? [];
+$_SESSION['transportes_seleccionados'] = $_POST['seleccionados'] ?? [];
 ?>
 
 <!DOCTYPE html>
@@ -15,10 +16,10 @@ $_SESSION['hospedajes_seleccionados'] = $_POST['seleccionados'] ?? [];
     <link rel="stylesheet" href="../css/style.css">
 <body>
     <div class="container">
-        <h1>Hospedajes seleccionados</h1>
+        <h1>Transportes seleccionados</h1>
 
         <?php
-        $seleccionados_guardados = $_SESSION['hospedajes_seleccionados'] ?? [];
+        $seleccionados_guardados = $_SESSION['transportes_seleccionados'] ?? [];
         ?>
 
         <?php if (!empty($seleccionados_guardados)): ?>
@@ -40,7 +41,7 @@ $_SESSION['hospedajes_seleccionados'] = $_POST['seleccionados'] ?? [];
                 </tbody>
             </table>
 <div style="margin-top: 1em;">
-    <a href="buscar_panorama.php" style="display:inline-block; padding:8px 16px; background:#007bff; color:white; text-decoration:none; border-radius:4px;">
+    <a href="confirmar_eleccion.php" style="display:inline-block; padding:8px 16px; background:#007bff; color:white; text-decoration:none; border-radius:4px;">
         Confirmar selección
     </a>
 </div>
@@ -49,8 +50,7 @@ $_SESSION['hospedajes_seleccionados'] = $_POST['seleccionados'] ?? [];
             <p>No hay hospedajes seleccionados.</p>
         <?php endif; ?>
 
-        <p><a href="show_hospedajes.php">Volver a la lista</a></p>
+        <p><a href="show_transportes.php">Volver a la lista</a></p>
     </div>
 </body>
 </html>
-

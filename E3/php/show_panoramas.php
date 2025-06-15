@@ -52,7 +52,7 @@ $hospedajes = $_SESSION['panoramas_disponibles']?? [];
         <h1>Panoramas en: <?= htmlspecialchars($ciudad) ?></h1>
 
         <?php if (!empty($hospedajes)): ?>
-<form action="buscar_transporte.php" method="post">
+<form action="procesar_seleccion_p.php" method="post">
     <div class="lista-hospedajes">
         <table>
             <thead>
