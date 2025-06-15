@@ -67,26 +67,23 @@ $cantidad_personas= $_SESSION['cantidad_personas'];
                     <?php endforeach; ?>
                 </tr>
             </thead>
-            <tbody>
-        <?php foreach ($hospedajes as $fila): ?>
-    <?php $esDisponible = strtolower(trim($fila['estado_disponibilidad'])) === 'disponible'; ?>
-    <tr>
-        <td>
-            <?php if ($esDisponible): ?>
-<input type="checkbox" name="seleccionados[]" value="<?= htmlspecialchars($fila['id']) ?>">
-            
-<?php else: ?>
-                <span style="color:black;">No disponible</span>
-            <?php endif; ?>
-        </td>
+        <tbody>
+    <?php foreach ($hospedajes as $fila): ?>
+        <?php 
+            $esDisponible = strtolower(trim($fila['estado_disponibilidad'])) === 'disponible'; 
+            if (!$esDisponible) continue; 
+        ?>
+        <tr>
+            <td>
+                <input type="checkbox" name="seleccionados[]" value="<?= htmlspecialchars($fila['id']) ?>">
+            </td>
+            <?php foreach ($cols as $col): ?>
+                <td><?= htmlspecialchars((string)$fila[$col]) ?></td>
+            <?php endforeach; ?>
+        </tr>
+    <?php endforeach; ?>
+</tbody>
 
-        <?php foreach ($cols as $col): ?>
-            <td><?= htmlspecialchars((string)$fila[$col]) ?></td>
-        <?php endforeach; ?>
-    </tr>
-<?php endforeach; ?>
-
-            </tbody>
         </table>
     </div>
     <div style="margin-top: 1em;">

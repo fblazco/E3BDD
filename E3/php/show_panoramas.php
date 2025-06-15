@@ -65,23 +65,23 @@ $hospedajes = $_SESSION['panoramas_disponibles']?? [];
                     <?php endforeach; ?>
                 </tr>
             </thead>
-            <tbody>
-                <?php foreach ($hospedajes as $index => $fila): ?>
-                    <?php $esDisponible = strtolower(trim($fila['estado_disponibilidad'])) === 'disponible'; ?>
-                    <tr>
-                        <td>
-                            <?php if ($esDisponible): ?>
-                                <input type="checkbox" name="seleccionados[]" value="<?= htmlspecialchars($fila['id']) ?>">
-                            <?php else: ?>
-                                <span style="color:black;">No disponible</span>
-                            <?php endif; ?>
-                        </td>
-                        <?php foreach ($cols as $col): ?>
-                            <td><?= htmlspecialchars((string)$fila[$col]) ?></td>
-                        <?php endforeach; ?>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
+<tbody>
+    <?php foreach ($hospedajes as $fila): ?>
+        <?php 
+            $esDisponible = strtolower(trim($fila['estado_disponibilidad'])) === 'disponible'; 
+            if (!$esDisponible) continue; 
+        ?>
+        <tr>
+            <td>
+                <input type="checkbox" name="seleccionados[]" value="<?= htmlspecialchars($fila['id']) ?>">
+            </td>
+            <?php foreach ($cols as $col): ?>
+                <td><?= htmlspecialchars((string)$fila[$col]) ?></td>
+            <?php endforeach; ?>
+        </tr>
+    <?php endforeach; ?>
+</tbody>
+           
         </table>
     </div>
     <div style="margin-top: 1em;">
