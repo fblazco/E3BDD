@@ -76,7 +76,7 @@ unset($_SESSION['error'], $_SESSION['success'], $_SESSION['form_data']);
                     <p class="success"><?= htmlspecialchars($mensaje_success) ?></p>
                 <?php endif; ?>
 
-                <p><a href="main.php">Volver al inicio</a></p>
+                <p><a href="index.php">Volver al inicio</a></p>
             </div>
         </form>
     </div>

@@ -53,7 +53,8 @@ try {
     INSERT INTO usuario (correo, puntos)
   VALUES (:email, 0)
 ");
-    $stmt2->bindParam('email', $email);
+    $stmt2->bindParam(':email', $email);
+    $stmt2->execute();
     $db->commit();
 
     unset($_SESSION['form_data']);

@@ -5,7 +5,11 @@ require_once 'utils.php';
 var_dump($_SESSION['hospedajes_seleccionados']); 
 var_dump($_SESSION['panoramas_seleccionados']); 
 var_dump($_SESSION['entradas']); 
-var_dump($_SESSION['transportes_seleccionados']); 
+var_dump($_SESSION['transportes_seleccionados']);
+var_dump($_SESSION['email']);
+var_dump($_SESSION['etiqueta']);
+$correo_usuario=$_SESSION['email'];
+$etiqueta=$_SESSION['etiqueta'];
 try {
     $db = conectarBD();
     $db->beginTransaction();

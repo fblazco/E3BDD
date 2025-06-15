@@ -101,7 +101,7 @@ $hospedajes = $_SESSION['aviones_disponibles']?? [];
 
 
 
-                <p><a href="main.php">Volver al inicio</a></p>
+                <p><a href="buscar_transporte.php">Volver al inicio</a></p>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const audio = document.getElementById('audio-bg');

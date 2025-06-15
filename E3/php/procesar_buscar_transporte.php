@@ -24,7 +24,7 @@ try {
 JOIN reserva r ON a.id = r.id
 JOIN transporte ON a.id = transporte.id
 WHERE transporte.lugar_llegada LIKE :aux 
-AND transporte.lugar_origen LIKE :aux2
+OR transporte.lugar_origen LIKE :aux2
 AND transporte.capacidad >= :aux3
 
 UNION
@@ -34,7 +34,7 @@ FROM bus b
 JOIN reserva r ON b.id = r.id
 JOIN transporte ON transporte.id = b.id
 WHERE transporte.lugar_llegada LIKE :aux 
-AND transporte.lugar_origen LIKE :aux2
+OR transporte.lugar_origen LIKE :aux2
 AND transporte.capacidad >= :aux3
 
 UNION
@@ -44,7 +44,7 @@ FROM tren t
 JOIN reserva r ON t.id = r.id
 JOIN transporte ON transporte.id = t.id
 WHERE transporte.lugar_llegada LIKE :aux 
-AND transporte.lugar_origen LIKE :aux2
+OR transporte.lugar_origen LIKE :aux2
 AND transporte.capacidad >= :aux3
 ");
     $aux="%{$ciudad_llegada}%";
