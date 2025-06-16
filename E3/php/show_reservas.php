@@ -1,7 +1,7 @@
 <?php
 session_start();
 $error = $_GET['error'] ?? null;
-$hospedajes = $_SESSION['agendas_usuario']?? [];
+$hospedajes = $_SESSION['lista_reservas']?? [];
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -38,7 +38,7 @@ $hospedajes = $_SESSION['agendas_usuario']?? [];
     <div class="container">
 <h1>Agendas asociadas al correo: <?php echo htmlspecialchars($_SESSION['email']); ?></h1>       
  <?php if (!empty($hospedajes)): ?>
-<form action="procesar_agenda_seleccionada.php" method="post">
+<form action="procesar_seleccion_agenda.php" method="post">
 
     <div class="lista-hospedajes">
         <table>
@@ -68,14 +68,14 @@ $hospedajes = $_SESSION['agendas_usuario']?? [];
 
         </table>
     </div>
-    <div style="margin-top: 1em;">
+<div style="margin-top: 1em;">
         <button type="submit">Confirmar selección</button>
     </div>
 </form>
             
 
         <?php else: ?>
-            <p>El empleado no existe</p>
+            <p>No hay reservas</p>
         <?php endif; ?>
 
                 <p><a href="main.php">Volver al inicio</a></p>
