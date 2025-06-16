@@ -1,4 +1,10 @@
 ## Estructura del proyecto
+fblazco@fblazco:~/Escritorio/2025-1/bases_de_datos/E3BDD/E3/php$ sudo -u postgres psql -d e3 -f trigger_puntos.sql
+CREATE FUNCTION
+DROP TRIGGER
+CREATE TRIGGER
+fblazco@fblazco:~/Escritorio/2025-1/bases_de_datos/E3BDD/E3/php$ sudo -u postgres psql -d e3 -f sp_calcular_puntos.sql 
+CREATE FUNCTION
 
 E3/  
 ├── css/  

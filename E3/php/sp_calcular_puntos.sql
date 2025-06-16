@@ -5,9 +5,9 @@ DECLARE
     total_monto NUMERIC;
     puntos_nuevos INT;
 BEGIN
-    SELECT correo_usuario INTO correo_usuario 
-    FROM agenda
-    WHERE id = id_agenda;
+    SELECT a.correo_usuario INTO correo_usuario 
+    FROM agenda a
+    WHERE a.id = id_agenda;
 
     SELECT SUM(monto) INTO total_monto
     FROM reserva

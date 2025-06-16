@@ -75,7 +75,7 @@ $hospedajes = $_SESSION['agendas_usuario']?? [];
             
 
         <?php else: ?>
-            <p>El empleado no existe</p>
+            <p>El Usuario no tiene Viajes Agendados</p>
         <?php endif; ?>
 
                 <p><a href="main.php">Volver al inicio</a></p>

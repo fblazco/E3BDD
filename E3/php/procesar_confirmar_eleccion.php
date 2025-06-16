@@ -43,12 +43,14 @@ try {
         WHERE id = :reserva_id
     ");
 
-    foreach ($ids as $lista_id) {
-        $updateReservaStmt->bindValue(':agenda_id', $nextId, PDO::PARAM_INT);
-        $updateReservaStmt->bindValue(':reserva_id', $lista_id, PDO::PARAM_STR);
-        $updateReservaStmt->bindValue(':cantidad_personas', $cantidad_personas, PDO::PARAM_INT);
-        $updateReservaStmt->execute();
-    }
+ foreach ($ids as $lista_id) {
+    list($id, $precio) = explode('|', $lista_id); 
+    $updateReservaStmt->bindValue(':agenda_id', $nextId, PDO::PARAM_INT);
+    $updateReservaStmt->bindValue(':reserva_id', $id, PDO::PARAM_INT);
+    $updateReservaStmt->bindValue(':cantidad_personas', $cantidad_personas, PDO::PARAM_INT);
+    $updateReservaStmt->execute();
+}
+
     
      if (!empty($_SESSION['entradas']) && is_array($_SESSION['entradas'])) {
         $participanteStmt = $db->prepare("
@@ -61,19 +63,23 @@ try {
             $stmt = $db->query("SELECT MAX(id) AS max_id FROM participante");
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             $nextId = ($row && $row['max_id'] !== null) ? ((int)$row['max_id'] + 1) : 1;
-
             foreach ($_SESSION['panoramas_seleccionados'] ?? [] as $panorama_id) {
-                $participanteStmt->bindValue(':panorama_id', $panorama_id, PDO::PARAM_INT);
+    		list($id, $precio) = explode('|', $panorama_id); 
+                $participanteStmt->bindValue(':panorama_id', $id, PDO::PARAM_INT);
                 $participanteStmt->bindValue(':nombre', $nombre, PDO::PARAM_STR);
                 $participanteStmt->bindValue(':edad', $edad, PDO::PARAM_INT);
                 $participanteStmt->bindValue(':id', $nextId, PDO::PARAM_INT);
                 $participanteStmt->execute();
-            }
+	    	$nextId = $nextId +1;
+	    }
         }
     }
 
 
     $db->commit();
+    header("Location: main.php");
+    exit();
+
 } catch (Exception $e) {
     if ($db->inTransaction()) {
         $db->rollBack();
