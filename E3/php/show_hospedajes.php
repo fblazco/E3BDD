@@ -101,7 +101,7 @@ $fecha_t = $_SESSION['fecha_termino'];
 
 
 
-                <p><a href="main.php">Volver al inicio</a></p>
+                <p><a href="crear_viaje.php">Volver al inicio</a></p>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const audio = document.getElementById('audio-bg');

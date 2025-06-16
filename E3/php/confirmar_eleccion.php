@@ -126,7 +126,7 @@ if (!isset($_SESSION['usuario'])) {
         <h1>Transportes seleccionados</h1>
 
         <?php
-        $seleccionados_guardados = $_SESSION['transportes_seleccionados'] ?? [];
+        $seleccionados_guardados = $_SESSION['seleccionados_transporte'] ?? [];
         ?>
 
         <?php if (!empty($seleccionados_guardados)): ?>

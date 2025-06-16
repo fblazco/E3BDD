@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+$_SESSION['seleccionados_transporte']=[];
 $cantidad_personas = $_SESSION['cantidad_personas']-1 ?? 0;
 
 if (!isset($_SESSION['entradas1'])) {

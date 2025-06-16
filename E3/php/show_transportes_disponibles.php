@@ -1,37 +1,22 @@
-
 <?php
 session_start();
 $error = $_GET['error'] ?? null;
-$avion_origen= $_SESSION['avion_origen'] ?? '';
-$avion_llegada= $_SESSION['avion_llegada'] ?? '';
-$hospedajes = $_SESSION['aviones_disponibles']?? []; 
-$a = $_SESSION['fecha_inicio'];
-$b = $_SESSION['fecha_termino'];
+$avion_origen = $_SESSION['avion_origen'] ?? '';
+$avion_llegada = $_SESSION['avion_llegada'] ?? '';
+$hospedajes = $_SESSION['aviones_disponibles'] ?? []; 
+$a = $_SESSION['fecha_inicio'] ?? '';
+$b = $_SESSION['fecha_termino'] ?? '';
+$seleccionadosPrevios = $_SESSION['seleccionados_transporte'] ?? [];
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Inicio de sesión - Booked.com</title>
+    <title>Transportes disponibles - Booked.com</title>
     <link rel="stylesheet" href="../css/style.css">
-</head>
-<body>
-            </div>
-    <div class="container">
-<div class="audio-control" style="margin-top:1em;">
-            <audio id="audio-bg" src="/php/musica.mp3" preload="none"></audio>
-
-            <button id="btn-play-audio" type="button">Reproducir música</button>
-            <button id="btn-pause-audio" type="button" style="display: none;">Pausar música</button>
-        </div>
-    </div>
-<?php
-?>
-<!DOCTYPE html>
-<html lang="es">
     <style>
         .lista-hospedajes {
-            max-height: 300px; /* altura deseada */
+            max-height: 300px;
             overflow-y: auto;
             border: 1px solid #ccc;
             padding: 0;
@@ -54,87 +39,66 @@ $b = $_SESSION['fecha_termino'];
 <body>
     <div class="container">
         <h1>Transportes disponibles en: <?= htmlspecialchars($avion_origen) ?> - <?= htmlspecialchars($avion_llegada) ?></h1>
-<h2>Entre las fechas <?= htmlspecialchars($a) ?> al <?= htmlspecialchars($b) ?></h2>
+        <h2>Entre las fechas <?= htmlspecialchars($a) ?> al <?= htmlspecialchars($b) ?></h2>
 
         <?php if (!empty($hospedajes)): ?>
- <form action="procesar_seleccion_t.php" method="post">
-    <div class="lista-hospedajes">
-        <table>
-            <thead>
-                <tr>
-                    <th>Seleccionar</th>
-                    <?php
-                    $cols = array_keys($hospedajes[0]);
-                    foreach ($cols as $col): ?>
-                        <th><?= htmlspecialchars($col) ?></th>
-                    <?php endforeach; ?>
-                </tr>
-            </thead>
-            <tbody>
-    <?php foreach ($hospedajes as $fila): ?>
-        <?php 
-            $esDisponible = strtolower(trim($fila['estado_disponibilidad'])) === 'disponible'; 
-            if (!$esDisponible) continue; 
-        ?>
-        <tr>
-            <td>
-<input type="checkbox" name="seleccionados[]" value="<?= htmlspecialchars($fila['id'] . '|' . $fila['precio_asiento']) ?>">
+        <form id="form-transporte" method="post">
+            <div class="lista-hospedajes">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Seleccionar</th>
+                            <?php
+                            $cols = array_keys($hospedajes[0]);
+                            foreach ($cols as $col): ?>
+                                <th><?= htmlspecialchars($col) ?></th>
+                            <?php endforeach; ?>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($hospedajes as $fila): ?>
+                            <?php 
+                                $esDisponible = strtolower(trim($fila['estado_disponibilidad'])) === 'disponible'; 
+                                if (!$esDisponible) continue;
 
-            </td>
-            <?php foreach ($cols as $col): ?>
-                <td><?= htmlspecialchars((string)$fila[$col]) ?></td>
-            <?php endforeach; ?>
-        </tr>
-    <?php endforeach; ?>
-</tbody>
+                                $valueActual = $fila['id'] . '|' . $fila['precio_asiento'];
+                                $isChecked = in_array($valueActual, $seleccionadosPrevios);
+                            ?>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="seleccionados[]" value="<?= htmlspecialchars($valueActual) ?>" <?= $isChecked ? 'checked' : '' ?>>
+                                </td>
+                                <?php foreach ($cols as $col): ?>
+                                    <td><?= htmlspecialchars((string)$fila[$col]) ?></td>
+                                <?php endforeach; ?>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
 
-        </table>
-    </div>
-    <div style="margin-top: 1em;">
-        <button type="submit">Confirmar selección</button>
-    </div>
-</form>
-            
+            <div style="margin-top: 1em;">
+                <button type="submit" formaction="guardar_temporal.php">Realizar otra busqueda manteniendo seleccionados</button>
+		<button type="submit" formaction="procesar_seleccion_t.php">Confirmar seleccionados</button>
+                <button type="submit" formaction="resetear_temporal.php">Reset Seleccionados</button>
+	    </div>
 
-
-
+        </form>
         <?php else: ?>
-            <p>No hay hospedajes disponibles para mostrar.</p>
+            <p>No hay transportes disponibles para mostrar.</p>
         <?php endif; ?>
 
+        <?php if (!empty($seleccionadosPrevios)): ?>
+            <h3>Transportes seleccionados hasta ahora:</h3>
+            <ul>
+                <?php foreach ($seleccionadosPrevios as $item): ?>
+                    <li><?= htmlspecialchars($item) ?></li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
 
-
-                <p><a href="buscar_transporte.php">Volver al inicio</a></p>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const audio = document.getElementById('audio-bg');
-        const btnPlay = document.getElementById('btn-play-audio');
-        const btnPause = document.getElementById('btn-pause-audio');
-
-        audio.addEventListener('errselect_avionor', () => {
-            console.error('Error al cargar audio:', audio.error && audio.error.code);
-        });
-
-        btnPlay.addEventListener('click', () => {
-            audio.play().then(() => {
-                btnPlay.style.display = 'none';
-                btnPause.style.display = 'inline-block';
-            }).catch(err => {
-                console.error('Falló audio.play():', err);
-            });
-        });
-
-        btnPause.addEventListener('click', () => {
-            audio.pause();
-            btnPause.style.display = 'none';
-            btnPlay.style.display = 'inline-block';
-        });
-
-        audio.addEventListener('ended', () => {
-            btnPause.style.display = 'none';
-            btnPlay.style.display = 'inline-block';
-        });
-    });
-    </script>
+        <p><a href="buscar_transporte.php">Volver </a></p>
+    </div>
 </body>
 </html>
+
