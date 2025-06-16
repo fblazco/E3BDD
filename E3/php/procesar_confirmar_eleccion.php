@@ -38,6 +38,7 @@ try {
         SET 
             agenda_id = :agenda_id,
             cantidad_personas = :cantidad_personas,
+            estado_disponibilidad = 'No disponible',
             fecha = CURRENT_DATE
         WHERE id = :reserva_id
     ");
@@ -70,7 +71,6 @@ try {
             }
         }
     }
-
 
 
     $db->commit();
