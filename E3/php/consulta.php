@@ -131,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </table>
     <?php elseif ($_SERVER['REQUEST_METHOD'] === 'POST'): ?>
         <p style="text-align:center;">No se encontraron resultados.</p>
-    <?php endif; ?></div>
+    <?php endif; ?>   <p><a href="main.php">Volver al inicio</a></p></div>
 </body>
 </html>
 

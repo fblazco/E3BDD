@@ -36,9 +36,10 @@ $hospedajes = $_SESSION['lista_reservas']?? [];
 </head>
 <body>
     <div class="container">
-<h1>Agendas asociadas al correo: <?php echo htmlspecialchars($_SESSION['email']); ?></h1>       
+<h1>Reserva asociadas al correo: <?php echo htmlspecialchars($_SESSION['email']); ?></h1>       
  <?php if (!empty($hospedajes)): ?>
-<form action="procesar_seleccion_agenda.php" method="post">
+<form action="procesar_seleccion_reserva.php" method="post">
+
 
     <div class="lista-hospedajes">
         <table>
@@ -56,7 +57,7 @@ $hospedajes = $_SESSION['lista_reservas']?? [];
     <?php foreach ($hospedajes as $fila): ?>
                 <tr>
             <td>
-        <input type="radio" name="agenda_seleccionada" value="<?= htmlspecialchars($fila['id']) ?>" required>
+        <input type="radio" name="reserva_seleccionada" value="<?= htmlspecialchars($fila['id']) ?>" required>
 
 </td>
             <?php foreach ($cols as $col): ?>

@@ -1,28 +1,15 @@
 <?php
 session_start();
 $error = $_GET['error'] ?? null;
-$ciudad = $_SESSION['lugar_panorama'] ?? '';
-$hospedajes = $_SESSION['panoramas_disponibles']?? []; 
+$hospedajes = $_SESSION['detalles']?? [];
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Inicio de sesión - Booked.com</title>
+    <title>- Booked.com</title>
     <link rel="stylesheet" href="../css/style.css">
-</head>
-<body>
-            </div>
-    <div class="container">
-<div class="audio-control" style="margin-top:1em;">
-            <audio id="audio-bg" src="/php/musica.mp3" preload="none"></audio>
 
-            <button id="btn-play-audio" type="button">Reproducir música</button>
-            <button id="btn-pause-audio" type="button" style="display: none;">Pausar música</button>
-        </div>
-    </div>
-<?php
-?>
 <!DOCTYPE html>
 <html lang="es">
     <style>
@@ -49,56 +36,40 @@ $hospedajes = $_SESSION['panoramas_disponibles']?? [];
 </head>
 <body>
     <div class="container">
-        <h1>Panoramas en: <?= htmlspecialchars($ciudad) ?></h1>
+<h1>Detalles: </h1>
+ <?php if (!empty($hospedajes)): ?>
 
-        <?php if (!empty($hospedajes)): ?>
-<form action="procesar_seleccion_p.php" method="post">
     <div class="lista-hospedajes">
         <table>
             <thead>
                 <tr>
-                    <th>Seleccionar</th>
-                    <?php
+                                        <?php
                     $cols = array_keys($hospedajes[0]);
                     foreach ($cols as $col): ?>
                         <th><?= htmlspecialchars($col) ?></th>
                     <?php endforeach; ?>
                 </tr>
             </thead>
-<tbody>
+        <tbody>
     <?php foreach ($hospedajes as $fila): ?>
-        <?php 
-            $esDisponible = strtolower(trim($fila['estado_disponibilidad'])) === 'disponible'; 
-            if (!$esDisponible) continue; 
-        ?>
-        <tr>
-            <td>
-<input type="checkbox" name="seleccionados[]" value="<?= htmlspecialchars($fila['id'] . '|' . $fila['precio_persona']) ?>">
-
-            </td>
-            <?php foreach ($cols as $col): ?>
+                <tr>
+                        <?php foreach ($cols as $col): ?>
                 <td><?= htmlspecialchars((string)$fila[$col]) ?></td>
             <?php endforeach; ?>
         </tr>
     <?php endforeach; ?>
 </tbody>
-           
+
         </table>
     </div>
-    <div style="margin-top: 1em;">
-        <button type="submit">Confirmar selección</button>
-    </div>
-</form>
- 
+    
+            
 
         <?php else: ?>
-            <p>No hay hospedajes disponibles para mostrar.</p>
+            <p>No se pudo acceder a los detalles</p>
         <?php endif; ?>
 
-
-
                 <p><a href="main.php">Volver al inicio</a></p>
-    </body>
+ </body>
+
 </html>
-
-
