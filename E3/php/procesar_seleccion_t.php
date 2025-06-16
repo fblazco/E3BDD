@@ -30,7 +30,9 @@ $_SESSION['transportes_seleccionados'] = $_POST['seleccionados'] ?? [];
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($seleccionados_guardados as $id): ?>
+                    <?php foreach ($seleccionados_guardados as $valor): 
+                    list($id, $precio) = explode('|', $valor);
+?>
                         <tr>
 <td>
     <?= isset($id) && $id !== null ? htmlspecialchars((string)$id) : '<i>valor no definido</i>' ?>

@@ -14,6 +14,8 @@ $usuario_id = $_SESSION['usuario'];
 $ciudad_origen= $_SESSION['avion_origen'];
 $ciudad_llegada = $_SESSION['avion_llegada'];
 $cantidad_personas=$_SESSION['cantidad_personas'];
+$fecha_i=$_SESSION['fecha_inicio'];
+$fecha_t=$_SESSION['fecha_termino'];
 require_once 'utils.php';
 
 try {
@@ -24,9 +26,9 @@ try {
 JOIN reserva r ON a.id = r.id
 JOIN transporte ON a.id = transporte.id
 WHERE transporte.lugar_llegada LIKE :aux 
-OR transporte.lugar_origen LIKE :aux2
+AND transporte.lugar_origen LIKE :aux2
 AND transporte.capacidad >= :aux3
-
+AND transporte.fecha_salida BETWEEN :fecha_inicio AND :fecha_termino
 UNION
 
 SELECT 'bus' AS tipo, transporte.*, r.estado_disponibilidad 
@@ -34,9 +36,9 @@ FROM bus b
 JOIN reserva r ON b.id = r.id
 JOIN transporte ON transporte.id = b.id
 WHERE transporte.lugar_llegada LIKE :aux 
-OR transporte.lugar_origen LIKE :aux2
+AND transporte.lugar_origen LIKE :aux2
 AND transporte.capacidad >= :aux3
-
+AND transporte.fecha_salida BETWEEN :fecha_inicio AND :fecha_termino
 UNION
 
 SELECT 'tren' AS tipo, transporte.*, r.estado_disponibilidad
@@ -44,8 +46,9 @@ FROM tren t
 JOIN reserva r ON t.id = r.id
 JOIN transporte ON transporte.id = t.id
 WHERE transporte.lugar_llegada LIKE :aux 
-OR transporte.lugar_origen LIKE :aux2
+AND transporte.lugar_origen LIKE :aux2
 AND transporte.capacidad >= :aux3
+AND transporte.fecha_salida BETWEEN :fecha_inicio AND :fecha_termino
 ");
     $aux="%{$ciudad_llegada}%";
     $aux2="%{$ciudad_origen}%";
@@ -53,6 +56,8 @@ AND transporte.capacidad >= :aux3
     $stmt->bindValue(':aux', $aux, PDO::PARAM_STR);
     $stmt->bindValue(':aux2', $aux2, PDO::PARAM_STR);
     $stmt->bindValue(':aux3', $aux3, PDO::PARAM_STR);
+    $stmt->bindValue(':fecha_inicio', $fecha_i);
+    $stmt->bindValue(':fecha_termino', $fecha_t);
     $stmt->execute();
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     if ($rows>0){

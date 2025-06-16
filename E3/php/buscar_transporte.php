@@ -18,7 +18,7 @@ session_start();
             <div class="form-group">
                 <label for="lugar_origen">Lugar origen:</label>
                 <input type="text" id="lugar_origen" name="lugar_origen"
-                    value="<?= htmlspecialchars($form_data['lugar_origen'] ?? '') ?>" required>
+                    value="<?= htmlspecialchars($form_data['lugar_origen'] ?? '') ?>" >
             </div>
 
             <div class="form-group">

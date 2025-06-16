@@ -5,6 +5,8 @@ $error = $_GET['error'] ?? null;
 $avion_origen= $_SESSION['avion_origen'] ?? '';
 $avion_llegada= $_SESSION['avion_llegada'] ?? '';
 $hospedajes = $_SESSION['aviones_disponibles']?? []; 
+$a = $_SESSION['fecha_inicio'];
+$b = $_SESSION['fecha_termino'];
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -52,7 +54,7 @@ $hospedajes = $_SESSION['aviones_disponibles']?? [];
 <body>
     <div class="container">
         <h1>Transportes disponibles en: <?= htmlspecialchars($avion_origen) ?> - <?= htmlspecialchars($avion_llegada) ?></h1>
-
+<h2>Entre las fechas <?= htmlspecialchars($a) ?> al <?= htmlspecialchars($b) ?></h2>
 
         <?php if (!empty($hospedajes)): ?>
  <form action="procesar_seleccion_t.php" method="post">
@@ -76,7 +78,8 @@ $hospedajes = $_SESSION['aviones_disponibles']?? [];
         ?>
         <tr>
             <td>
-                <input type="checkbox" name="seleccionados[]" value="<?= htmlspecialchars($fila['id']) ?>">
+<input type="checkbox" name="seleccionados[]" value="<?= htmlspecialchars($fila['id'] . '|' . $fila['precio_asiento']) ?>">
+
             </td>
             <?php foreach ($cols as $col): ?>
                 <td><?= htmlspecialchars((string)$fila[$col]) ?></td>

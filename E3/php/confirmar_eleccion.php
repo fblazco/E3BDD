@@ -25,15 +25,21 @@ if (!isset($_SESSION['usuario'])) {
                 <thead>
                     <tr>
                         <th>ID</th>
+                        <th>Precio Noche</th>
                     </tr>
+
                 </thead>
                 <tbody>
-                    <?php foreach ($seleccionados_guardados as $id): ?>
+                    <?php foreach ($seleccionados_guardados as $valor):
+                    list($id, $precio) = explode('|', $valor);
+?>
                         <tr>
 <td>
     <?= isset($id) && $id !== null ? htmlspecialchars((string)$id) : '<i>valor no definido</i>' ?>
 </td>
-
+<td>
+    <?= isset($precio) && $precio!== null ? htmlspecialchars((string)$precio) : '<i>valor no definido</i>' ?>
+</td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -56,15 +62,21 @@ if (!isset($_SESSION['usuario'])) {
                 <thead>
                     <tr>
                         <th>ID</th>
+                        <th>Precio por persona</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($seleccionados_guardados as $id): ?>
+                    <?php foreach ($seleccionados_guardados as $valor):
+                    list($id, $precio) = explode('|', $valor);
+?>
                         <tr>
 <td>
     <?= isset($id) && $id !== null ? htmlspecialchars((string)$id) : '<i>valor no definido</i>' ?>
 </td>
-
+<td>
+    <?= isset($precio) && $precio!== null ? htmlspecialchars((string)$precio) : '<i>valor no definido</i>' ?>
+</td>
+ 
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -122,15 +134,21 @@ if (!isset($_SESSION['usuario'])) {
                 <thead>
                     <tr>
                         <th>ID</th>
+                        <th>Precio por asiento</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($seleccionados_guardados as $id): ?>
+                    <?php foreach ($seleccionados_guardados as $valor): 
+                    list($id, $precio) = explode('|', $valor);
+?>
                         <tr>
 <td>
     <?= isset($id) && $id !== null ? htmlspecialchars((string)$id) : '<i>valor no definido</i>' ?>
 </td>
-
+<td>
+    <?= isset($precio) && $precio!== null ? htmlspecialchars((string)$precio) : '<i>valor no definido</i>' ?>
+</td>
+ 
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

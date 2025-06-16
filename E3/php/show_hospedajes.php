@@ -5,6 +5,8 @@ $error = $_GET['error'] ?? null;
 $ciudad = $_SESSION['ciudad'] ?? '';
 $hospedajes = $_SESSION['hospedajes_disponibles']?? []; 
 $cantidad_personas= $_SESSION['cantidad_personas'];
+$fecha_i = $_SESSION['fecha_inicio'];
+$fecha_t = $_SESSION['fecha_termino'];
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -52,7 +54,7 @@ $cantidad_personas= $_SESSION['cantidad_personas'];
 <body>
     <div class="container">
         <h1>Hospedajes disponibles en: <?= htmlspecialchars($ciudad) ?></h1>
-        <h2>para  <?= htmlspecialchars($cantidad_personas)?> </h2>
+        <h2>para  <?= htmlspecialchars($cantidad_personas)?> personas, entre el <?= htmlspecialchars($fecha_i)?> al <?= htmlspecialchars($fecha_t)?></h2>
         <?php if (!empty($hospedajes)): ?>
 <form action="procesar_seleccion_h.php" method="post">
     <div class="lista-hospedajes">
@@ -75,8 +77,9 @@ $cantidad_personas= $_SESSION['cantidad_personas'];
         ?>
         <tr>
             <td>
-                <input type="checkbox" name="seleccionados[]" value="<?= htmlspecialchars($fila['id']) ?>">
-            </td>
+            <input type="checkbox" name="seleccionados[]" value="<?= htmlspecialchars($fila['id'] . '|' . $fila['precio_noche']) ?>">
+            
+        </td>
             <?php foreach ($cols as $col): ?>
                 <td><?= htmlspecialchars((string)$fila[$col]) ?></td>
             <?php endforeach; ?>

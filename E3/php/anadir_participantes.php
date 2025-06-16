@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-$cantidad_personas = $_SESSION['cantidad_personas'] ?? 0;
+$cantidad_personas = $_SESSION['cantidad_personas']-1 ?? 0;
 
 if (!isset($_SESSION['entradas1'])) {
     $_SESSION['entradas1'] = [];
@@ -35,7 +35,6 @@ $listaActual = $_SESSION['entradas1'] ?? [];
 $msgError = $_SESSION['msg_error'] ?? null;
 unset($_SESSION['msg_error']);
 
-// Si ya se ingresaron todos los participantes, pasar automáticamente
 if (count($listaActual) >= $cantidad_personas) {
     $_SESSION['entradas'] = $listaActual;
     $_SESSION['entradas1'] = [];
@@ -51,6 +50,7 @@ if (count($listaActual) >= $cantidad_personas) {
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
+<div class="container">
     <h1>Ingreso de Participantes</h1>
 
     <?php if ($msgError): ?>
@@ -69,7 +69,8 @@ if (count($listaActual) >= $cantidad_personas) {
         <button type="submit" name="action" value="agregar">Agregar</button>
         <button type="submit" name="action" value="reset">Resetear</button>
     </form>
-
+</div>
+<div class="container">
     <?php if (!empty($listaActual)): ?>
         <h2>Personas ingresadas:</h2>
         <ul>
@@ -78,6 +79,7 @@ if (count($listaActual) >= $cantidad_personas) {
             <?php endforeach; ?>
         </ul>
     <?php endif; ?>
+</div>
 </body>
 </html>
 

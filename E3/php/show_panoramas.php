@@ -27,7 +27,7 @@ $hospedajes = $_SESSION['panoramas_disponibles']?? [];
 <html lang="es">
     <style>
         .lista-hospedajes {
-            max-height: 300px; /* altura deseada */
+            max-height: 300px; 
             overflow-y: auto;
             border: 1px solid #ccc;
             padding: 0;
@@ -73,7 +73,8 @@ $hospedajes = $_SESSION['panoramas_disponibles']?? [];
         ?>
         <tr>
             <td>
-                <input type="checkbox" name="seleccionados[]" value="<?= htmlspecialchars($fila['id']) ?>">
+<input type="checkbox" name="seleccionados[]" value="<?= htmlspecialchars($fila['id'] . '|' . $fila['precio_persona']) ?>">
+
             </td>
             <?php foreach ($cols as $col): ?>
                 <td><?= htmlspecialchars((string)$fila[$col]) ?></td>
