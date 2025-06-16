@@ -18,7 +18,6 @@ $whereValor = trim($_POST['where_valor'] ?? '');
 $resultados = [];
 $error = '';
 
-// Aquí debe escribir la lógica de la consulta y ejecución
 try {
     $db = conectarBD();
 
@@ -26,10 +25,14 @@ try {
 $columnaSel = preg_replace('/[^a-zA-Z0-9_]/', '', $columnaSel);
 $whereCampo = preg_replace('/[^a-zA-Z0-9_]/', '', $whereCampo);
 
-$sql = "SELECT $columnaSel FROM $tablaSel WHERE $whereCampo LIKE :valor";
+$sql = "SELECT :columna FROM :tabla WHERE :campo LIKE :valor";
+
 $stmt = $db->prepare($sql);
 $valorLike = "%$whereValor%";
-$stmt->bindParam(':valor', $valorLike);
+$stmt->bindParam(':columna', $columnaSel, PDO::PARAM_STR);
+$stmt->bindParam(':tabla',$tablaSel, PDO::PARAM_STR);
+$stmt->bindParam(':campo',$whereCampo, PDO::PARAM_STR);
+$stmt->bindParam(':valor', $valorLike,PDO::PARAM_STR);
 $stmt->execute();
 $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -43,7 +46,7 @@ $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <title>Consulta Inestructurada Guiada</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/style.csus">
 </head>
 <body>
 <div class="container">

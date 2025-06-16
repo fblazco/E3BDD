@@ -2,15 +2,15 @@
 session_start();
 require_once 'utils.php';
 
-$usuario = $_POST['usuario'] ?? '';
-$contrasena = $_POST['contrasena'] ?? '';
+$usuario = $_POST['empleado'] ?? '';
+$contrasena = $_POST['pass'] ?? '';
 
 $db = conectarBD();
 
 $query = "
     SELECT p.correo, p.contrasena    
-    FROM persona p JOIN usuario u 
-    ON p.correo=u.correo
+    FROM persona p
+    JOIN empleado ON p.correo = empleado.correo
     WHERE p.username = :usuario AND p.contrasena = :contrasena
 ";
 
@@ -22,12 +22,12 @@ $stmt->execute();
 $resultado = $stmt->fetch();
 
 if ($resultado) {
-    $_SESSION['usuario'] = $usuario;
-    $_SESSION['email']= $resultado['correo'];
-    header('Location: main.php');
+    $_SESSION['empleado'] = $usuario;
+    $_SESSION['correo_empleado']= $resultado['correo'];
+    header('Location: menu_empleado.php');
     exit();
 } else {
-    header('Location: index.php?error=Usuario no existe o contrasena errónea');
+    header('Location: index.php?error=Empleado no existe o contrasena errónea');
     exit();
 }
 ?>

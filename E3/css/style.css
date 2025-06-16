@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background: url('fondo2.webp') no-repeat center center fixed;
+    background: url('mercedes.jpg') no-repeat center center fixed;
     background-size: cover;
     display: flex;
     justify-content: flex-start;
@@ -9,7 +9,7 @@ body {
 }
 
 .container {
-    background: gold;
+    background: #00A19B;
     padding: 40px;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);

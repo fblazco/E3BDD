@@ -36,6 +36,27 @@ $error = $_GET['error'] ?? null;
             <button id="btn-pause-audio" type="button" style="display: none;">Pausar música</button>
         </div>
     </div>
+    <div class="container">
+        <h1>Log Empleados</h1>
+
+        <form action="/php/validar_empleado.php" method="POST" class="formulario">
+            <label for="empleado">Usuario:</label>
+            <input type="text" id="empleado" name="empleado" required>
+
+
+            <label for="pass">Contraseña:</label>
+            <input type="password" id="pass" name="pass" required>
+
+            <button type="submit">Iniciar sesión</button>
+        </form>
+
+
+        <?php if ($error): ?>
+            <p class="error"><?= htmlspecialchars($error) ?></p>
+        <?php endif; ?>
+
+   </div>
+
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
