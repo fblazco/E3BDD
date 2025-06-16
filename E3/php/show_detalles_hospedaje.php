@@ -69,7 +69,7 @@ $hospedajes = $_SESSION['detalles']?? [];
             <p>No se pudo acceder a los detalles</p>
         <?php endif; ?>
 
-                <p><a href="main.php">Volver al inicio</a></p>
+                <p><a href="show_reservas.php">Volver al inicio</a></p>
  </body>
 
 </html>

@@ -57,7 +57,7 @@ $hospedajes = $_SESSION['lista_eliminar']?? [];
     <?php foreach ($hospedajes as $fila): ?>
                 <tr>
             <td>
-        <input type="radio" name="seleccionado_eliminar" value="<?= htmlspecialchars($fila['correo']) ?>" required>
+        <input type="radio" name="correo_eliminar" value="<?= htmlspecialchars($fila['correo']) ?>" required>
 
 </td>
             <?php foreach ($cols as $col): ?>
