@@ -2,55 +2,85 @@
 session_start();
 require_once 'utils.php';
 
-// Tablas válidas en el sistema
+$db = conectarBD();
 $tablas = [
-    'agenda', 'habitacion', 'participante', 'avion', 'reserva',
-    'airbnb', 'bus', 'tren', 'review', 'persona', 'panorama',
-    'usuario', 'transporte', 'seguro', 'empleado', 'hospedaje', 'hotel'
+      'agenda', 'habitacion', 'participante', 'avion', 'reserva',
+ 'airbnb', 'bus', 'tren', 'review', 'persona', 'panorama',
+ 'usuario', 'transporte', 'seguro', 'empleado', 'hospedaje', 'hotel'
 ];
+try {
+    $stmtTablas = $db->query("
+        SELECT table_name 
+        FROM information_schema.tables 
+        WHERE table_schema = 'public'
+    ");
+    $tablas = $stmtTablas->fetchAll(PDO::FETCH_COLUMN);
+} catch (Exception $e) {
+    $tablas = [];
+}
 
-// Variables de apoyo
+$columnaSel = $_POST['columna'] ?? '';
 $tablaSel = $_POST['tabla'] ?? '';
-$columnaSel = trim($_POST['columna'] ?? '');
-$whereCampo = trim($_POST['where_campo'] ?? '');
-$whereValor = trim($_POST['where_valor'] ?? '');
-
+$whereCampo = $_POST['campo'] ?? '';
+$whereValor = $_POST['valor'] ?? '';
 $resultados = [];
 $error = '';
 
-try {
-    $db = conectarBD();
-
-
 $columnaSel = preg_replace('/[^a-zA-Z0-9_]/', '', $columnaSel);
+$tablaSel = preg_replace('/[^a-zA-Z0-9_]/', '', $tablaSel);
 $whereCampo = preg_replace('/[^a-zA-Z0-9_]/', '', $whereCampo);
 
-$sql = "SELECT :columna FROM :tabla WHERE :campo LIKE :valor";
-
-$stmt = $db->prepare($sql);
-$valorLike = "%$whereValor%";
-$stmt->bindParam(':columna', $columnaSel, PDO::PARAM_STR);
-$stmt->bindParam(':tabla',$tablaSel, PDO::PARAM_STR);
-$stmt->bindParam(':campo',$whereCampo, PDO::PARAM_STR);
-$stmt->bindParam(':valor', $valorLike,PDO::PARAM_STR);
-$stmt->execute();
-$resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-} catch (Exception $e) {
-    if ($db->inTransaction()) $db->rollBack();
-    $_SESSION['error'] = 'Usuario no se puede registrar';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
+        $sql = "SELECT $columnaSel FROM $tablaSel WHERE $whereCampo LIKE :valor";
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':valor', "%$whereValor%", PDO::PARAM_STR);
+        $stmt->execute();
+        $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        $error = "Error en la consulta: " . $e->getMessage();
+    }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Consulta Inestructurada Guiada</title>
-    <link rel="stylesheet" href="../css/style.csus">
+    <title>Consulta Inestructurada</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .formulario, table {
+            margin: 1em auto;
+            max-width: 800px;
+        }
+        input, select {
+            width: 100%;
+            padding: 6px;
+            margin-bottom: 10px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <h1>Consulta Inestructurada Guiada</h1>
+<div class="container" >
+    <h1 style="text-align:center;">Consulta Inestructurada Guiada</h1>
+
+    <?php if ($error): ?>
+        <div class="error"><?= htmlspecialchars($error) ?></div>
+    <?php endif; ?>
 
     <form method="POST" class="formulario">
         <div class="form-group">
@@ -63,49 +93,45 @@ $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <select name="tabla" id="tabla" required>
                 <option value="">-- Seleccionar tabla --</option>
                 <?php foreach ($tablas as $tabla): ?>
-                    <option value="<?= $tabla ?>" <?= $tablaSel === $tabla ? 'selected' : '' ?>><?= $tabla ?></option>
+                    <option value="<?= $tabla ?>" <?= $tablaSel === $tabla ? 'selected' : '' ?>>
+                        <?= $tabla ?>
+                    </option>
                 <?php endforeach; ?>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="where_campo">Campo para filtrar (WHERE):</label>
-            <input type="text" name="where_campo" id="where_campo" value="<?= htmlspecialchars($whereCampo) ?>">
+            <label for="campo">Campo para condición (WHERE):</label>
+            <input type="text" name="campo" id="campo" required value="<?= htmlspecialchars($whereCampo) ?>">
         </div>
 
         <div class="form-group">
-            <label for="where_valor">Valor:</label>
-            <input type="text" name="where_valor" id="where_valor" value="<?= htmlspecialchars($whereValor) ?>">
+            <label for="valor">Valor a buscar (LIKE '%valor%'):</label>
+            <input type="text" name="valor" id="valor" required value="<?= htmlspecialchars($whereValor) ?>">
         </div>
 
-        <button type="submit">Ejecutar</button>
-        <p><a href="main.php">Volver al inicio</a></p>
+        <button type="submit">Consultar</button>
     </form>
 
-    <?php if ($error): ?>
-        <p class="error"><?= $error ?></p>
-    <?php endif; ?>
-
-    <?php if (!empty($resultados)): ?>
-        <table class="tabla-estandar">
+    <?php if ($resultados): ?>
+        <h2 style="text-align:center;">Resultados</h2>
+        <table>
             <thead>
                 <tr>
-                    <?php foreach (array_keys($resultados[0]) as $col): ?>
-                        <th><?= htmlspecialchars($col) ?></th>
-                    <?php endforeach; ?>
+                    <th><?= htmlspecialchars($columnaSel) ?></th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($resultados as $fila): ?>
                     <tr>
-                        <?php foreach ($fila as $valor): ?>
-                            <td><?= htmlspecialchars($valor) ?></td>
-                        <?php endforeach; ?>
+                        <td><?= htmlspecialchars($fila[$columnaSel] ?? '') ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
-    <?php endif; ?>
-</div>
+    <?php elseif ($_SERVER['REQUEST_METHOD'] === 'POST'): ?>
+        <p style="text-align:center;">No se encontraron resultados.</p>
+    <?php endif; ?></div>
 </body>
 </html>
+
